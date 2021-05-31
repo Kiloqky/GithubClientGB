@@ -19,6 +19,6 @@ class GithubUsersRepo {
     }
 
     fun getUserById(userId: String): GithubUser {
-        return repositories.first{it.login == userId}
+        return repositories.first { it.login == userId }
     }
 }

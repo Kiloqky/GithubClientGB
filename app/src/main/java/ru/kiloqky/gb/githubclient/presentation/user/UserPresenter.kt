@@ -6,13 +6,12 @@ import ru.kiloqky.gb.githubclient.model.GithubUsersRepo
 
 class UserPresenter(
     private val userid: String,
-    private val userRepository: GithubUsersRepo,
-    private val router: Router
+    private val userRepository: GithubUsersRepo
 ): MvpPresenter<UserView>() {
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
         userRepository.getUserById(userid)
-            ?.let(viewState::showUser)
+            .let(viewState::showUser)
     }
 }
 

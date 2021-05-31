@@ -23,7 +23,8 @@ class UsersRVAdapter(val presenter: IUserListPresenter) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) =
         presenter.bindView(holder.apply { pos = position })
 
-    inner class ViewHolder(val binding: ItemGithubUserBinding) : RecyclerView.ViewHolder(binding.root),
+    inner class ViewHolder(val binding: ItemGithubUserBinding) :
+        RecyclerView.ViewHolder(binding.root),
         UserItemView {
         override var pos = -1
 

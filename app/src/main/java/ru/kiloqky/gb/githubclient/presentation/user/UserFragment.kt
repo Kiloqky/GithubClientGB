@@ -30,7 +30,7 @@ class UserFragment : MvpAppCompatFragment(R.layout.fragment_user), UserView {
     }
 
     private val presenter: UserPresenter by moxyPresenter {
-        UserPresenter(userId, GithubUsersRepo(), router)
+        UserPresenter(userId, GithubUsersRepo())
     }
 
     override fun onCreateView(
