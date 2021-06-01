@@ -8,7 +8,7 @@ import ru.kiloqky.gb.githubclient.presentation.user.UserScreen
 import ru.kiloqky.gb.githubclient.presentation.users.adapter.IUserListPresenter
 import ru.kiloqky.gb.githubclient.presentation.users.adapter.UserItemView
 
-class UsersPresenter(val usersRepo: GithubUsersRepo, val router: Router) :
+class UsersPresenter(private val usersRepo: GithubUsersRepo, private val router: Router) :
     MvpPresenter<UsersView>() {
     class UsersListPresenter : IUserListPresenter {
         val users = mutableListOf<GithubUser>()
