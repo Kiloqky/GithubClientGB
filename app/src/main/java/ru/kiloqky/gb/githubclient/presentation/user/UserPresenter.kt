@@ -12,7 +12,7 @@ class UserPresenter(
         super.onFirstViewAttach()
         userRepository
             .getUserById(userid)
-            .subscribe(viewState::showUser)
+            .subscribe(viewState::showUser, viewState::showError)
     }
 }
 

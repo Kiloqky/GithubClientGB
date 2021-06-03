@@ -20,6 +20,6 @@ class GithubUsersRepo {
         Single.just(repositories)
 
     fun getUserById(userId: String): Single<GithubUser> =
-        Single.just(repositories.first { it.login == userId })
+        Single.fromCallable { repositories.first { it.login == userId } }
 
 }

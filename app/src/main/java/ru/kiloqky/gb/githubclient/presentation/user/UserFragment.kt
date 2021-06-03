@@ -46,6 +46,10 @@ class UserFragment : MvpAppCompatFragment(R.layout.fragment_user), UserView {
         binding?.login?.text = user.login
     }
 
+    override fun showError(t: Throwable) {
+        binding?.login?.text = t.message
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         binding = null
