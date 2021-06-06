@@ -1,4 +1,4 @@
-package ru.kiloqky.gb.githubclient.presentation.users.adapter
+package ru.kiloqky.gb.githubclient.presentation.rvinterfaces
 
 interface IListPresenter<V : ItemView> {
     var itemClickListener: ((V) -> Unit)?
