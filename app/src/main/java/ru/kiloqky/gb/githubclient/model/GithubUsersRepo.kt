@@ -1,5 +1,7 @@
 package ru.kiloqky.gb.githubclient.model
 
+import io.reactivex.rxjava3.core.Single
+
 class GithubUsersRepo {
     private val repositories = listOf(
         GithubUser("login1"),
@@ -14,11 +16,10 @@ class GithubUsersRepo {
         GithubUser("login10")
     )
 
-    fun getUsers(): List<GithubUser> {
-        return repositories
-    }
+    fun getUsers(): Single<List<GithubUser>> =
+        Single.just(repositories)
 
-    fun getUserById(userId: String): GithubUser {
-        return repositories.first { it.login == userId }
-    }
+    fun getUserById(userId: String): Single<GithubUser> =
+        Single.fromCallable { repositories.first { it.login == userId } }
+
 }

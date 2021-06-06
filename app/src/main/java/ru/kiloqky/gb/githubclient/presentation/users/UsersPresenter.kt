@@ -35,8 +35,13 @@ class UsersPresenter(private val usersRepo: GithubUsersRepo, private val router:
     }
 
     private fun loadData() {
-        val users = usersRepo.getUsers()
-        usersListPresenter.users.addAll(users)
+        usersRepo
+            .getUsers()
+            .subscribe(::onGetUsersSuccess)
+    }
+
+    private fun onGetUsersSuccess(list: List<GithubUser>) {
+        usersListPresenter.users.addAll(list)
         viewState.updateList()
     }
 

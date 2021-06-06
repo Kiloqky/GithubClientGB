@@ -7,4 +7,5 @@ import ru.kiloqky.gb.githubclient.model.GithubUser
 @StateStrategyType(AddToEndSingleStrategy::class)
 interface UserView: MvpView {
     fun showUser(user: GithubUser)
+    fun showError(t: Throwable)
 }
