@@ -9,6 +9,8 @@ import ru.kiloqky.gb.githubclient.App.Navigation.router
 import ru.kiloqky.gb.githubclient.R
 import ru.kiloqky.gb.githubclient.databinding.FragmentUserBinding
 import ru.kiloqky.gb.githubclient.helpers.arguments
+import ru.kiloqky.gb.githubclient.helpers.gone
+import ru.kiloqky.gb.githubclient.helpers.visible
 import ru.kiloqky.gb.githubclient.model.githubrest.entities.GithubUser
 import ru.kiloqky.gb.githubclient.model.githubrest.ApiHolder
 import ru.kiloqky.gb.githubclient.model.githubrest.RetrofitGithubUserRepo
@@ -43,6 +45,9 @@ class UserFragment : MvpAppCompatFragment(R.layout.fragment_user), UserView {
     }
 
     override fun init() {
+        binding.userContainer.gone()
+        binding.shimmerLayoutContainer.visible()
+        binding.shimmerLayoutContainer.startShimmer()
         binding.rvRepos.layoutManager = LinearLayoutManager(context)
         adapter = ReposRVAdapter(presenter.reposListPresenter)
         binding.rvRepos.adapter = adapter
@@ -54,6 +59,10 @@ class UserFragment : MvpAppCompatFragment(R.layout.fragment_user), UserView {
 
     override fun showUser(githubUser: GithubUser) {
         with(binding) {
+            shimmerLayoutContainer.gone()
+            userContainer.visible()
+            shimmerLayoutContainer.stopShimmer()
+            login
             login.text = githubUser.login
             name.text = githubUser.name
             repoCount.text = githubUser.public_repos.toString()

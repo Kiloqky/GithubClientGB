@@ -51,7 +51,9 @@ class UsersPresenter(
                 .subscribe(::onGetUsersSuccess, ::onGetUsersError)
 
     }
-
+    fun refresh(){
+        loadData()
+    }
     private fun onGetUsersSuccess(list: List<GithubUser>) {
         usersListPresenter.users.clear()
         usersListPresenter.users.addAll(list)
@@ -59,6 +61,7 @@ class UsersPresenter(
     }
 
     private fun onGetUsersError(t: Throwable?) {
+        viewState.showError()
         t?.printStackTrace()
     }
 

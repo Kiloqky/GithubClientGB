@@ -10,6 +10,8 @@ import ru.kiloqky.gb.githubclient.R
 import ru.kiloqky.gb.githubclient.databinding.FragmentReposBinding
 import ru.kiloqky.gb.githubclient.helpers.arguments
 import ru.kiloqky.gb.githubclient.helpers.click
+import ru.kiloqky.gb.githubclient.helpers.gone
+import ru.kiloqky.gb.githubclient.helpers.visible
 import ru.kiloqky.gb.githubclient.model.githubrest.ApiHolder
 import ru.kiloqky.gb.githubclient.model.githubrest.RetrofitGithubUserRepo
 import ru.kiloqky.gb.githubclient.model.githubrest.entities.Repo
@@ -43,6 +45,8 @@ class RepoFragment : MvpAppCompatFragment(R.layout.fragment_repos), RepoView {
         GlideImageLoader()
     }
 
+
+
     private val presenter: RepoPresenter by moxyPresenter {
         RepoPresenter(
             repoName, repoOwner, RetrofitGithubUserRepo(ApiHolder().api),
@@ -52,6 +56,9 @@ class RepoFragment : MvpAppCompatFragment(R.layout.fragment_repos), RepoView {
 
     override fun showUserAndRepo(repo: Repo) {
         with(binding) {
+            shimmerLayoutContainer.gone()
+            contentContainer.visible()
+            shimmerLayoutContainer.stopShimmer()
             login.text = repo.owner?.login
             repo.owner?.avatarUrl?.let { url ->
                 imageLoader.loadInto(url, ivUserAvatar)
@@ -74,5 +81,13 @@ class RepoFragment : MvpAppCompatFragment(R.layout.fragment_repos), RepoView {
 
     override fun showError(t: Throwable?) {
         Toast.makeText(requireContext(), t?.message, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun init() {
+        with(binding){
+            shimmerLayoutContainer.visible()
+            contentContainer.gone()
+            shimmerLayoutContainer.startShimmer()
+        }
     }
 }

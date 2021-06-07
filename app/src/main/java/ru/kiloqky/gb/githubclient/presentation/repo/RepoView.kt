@@ -9,4 +9,5 @@ import ru.kiloqky.gb.githubclient.model.githubrest.entities.Repo
 interface RepoView : MvpView {
     fun showUserAndRepo(repo: Repo)
     fun showError(t: Throwable?)
+    fun init()
 }

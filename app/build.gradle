@@ -78,4 +78,10 @@ dependencies {
 
     //viewBindingPropertyDelegate
     implementation 'com.github.kirich1409:viewbindingpropertydelegate:1.4.6'
+
+    //shimmerEffect
+    implementation 'com.facebook.shimmer:shimmer:0.5.0'
+
+    //swipeRefreshLayout
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
 }

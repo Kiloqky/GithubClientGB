@@ -12,6 +12,7 @@ class RepoPresenter(
 ) : MvpPresenter<RepoView>() {
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
+        viewState.init()
         repository
             .loadRepo(repoName, repoOwner)
             .observeOn(schedulers.main())

@@ -10,3 +10,11 @@ fun Fragment.arguments(vararg arguments: Pair<String, Any>): Fragment {
     this.arguments = bundleOf(*arguments)
     return this
 }
+
+fun View.gone() {
+    this.visibility = View.GONE
+}
+
+fun View.visible() {
+    this.visibility = View.VISIBLE
+}
