@@ -7,6 +7,7 @@ Currently used:
 - Glide
 - RxJava
 - Shimmer Effect
+
 In development: 
 - Dagger 2
 - Room
