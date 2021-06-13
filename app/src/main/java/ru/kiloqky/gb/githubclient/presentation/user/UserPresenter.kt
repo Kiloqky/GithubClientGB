@@ -46,15 +46,14 @@ class UserPresenter(
                 .loadUserByLogin(login)
                 .observeOn(schedulers.main())
                 .subscribeOn(schedulers.background())
-                .doOnNext {
-                    disposables +=
-                        userRepository
-                            .loadReposFromLogin(login)
-                            .observeOn(schedulers.main())
-                            .subscribeOn(schedulers.background())
-                            .subscribe(::getReposSuccess, viewState::showError)
-                }
                 .subscribe(viewState::showUser, viewState::showError)
+
+        disposables +=
+            userRepository
+                .loadReposFromLogin(login)
+                .observeOn(schedulers.main())
+                .subscribeOn(schedulers.background())
+                .subscribe(::getReposSuccess, viewState::showError)
     }
 
     private fun getReposSuccess(list: List<Repo>) {
