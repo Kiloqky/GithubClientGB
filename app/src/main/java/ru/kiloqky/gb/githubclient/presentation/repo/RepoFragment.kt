@@ -12,10 +12,10 @@ import ru.kiloqky.gb.githubclient.helpers.arguments
 import ru.kiloqky.gb.githubclient.helpers.click
 import ru.kiloqky.gb.githubclient.helpers.gone
 import ru.kiloqky.gb.githubclient.helpers.visible
-import ru.kiloqky.gb.githubclient.model.githubrest.ApiHolder
-import ru.kiloqky.gb.githubclient.model.githubrest.RetrofitGithubUserRepo
-import ru.kiloqky.gb.githubclient.model.githubrest.entities.Repo
+import ru.kiloqky.gb.githubclient.model.user.datasource.cloud.CloudGithubUserDataSource
+import ru.kiloqky.gb.githubclient.model.entities.Repo
 import ru.kiloqky.gb.githubclient.model.imageloader.GlideImageLoader
+import ru.kiloqky.gb.githubclient.model.user.GithubUserRepositoryFactory
 import ru.kiloqky.gb.githubclient.scheduler.SchedulersFactory
 
 class RepoFragment : MvpAppCompatFragment(R.layout.fragment_repos), RepoView {
@@ -49,7 +49,7 @@ class RepoFragment : MvpAppCompatFragment(R.layout.fragment_repos), RepoView {
 
     private val presenter: RepoPresenter by moxyPresenter {
         RepoPresenter(
-            repoName, repoOwner, RetrofitGithubUserRepo(ApiHolder().api),
+            repoName, repoOwner, GithubUserRepositoryFactory.create(),
             SchedulersFactory.create()
         )
     }

@@ -3,11 +3,10 @@ package ru.kiloqky.gb.githubclient.presentation.user
 import android.util.Log
 import com.github.terrakok.cicerone.Router
 import io.reactivex.rxjava3.disposables.CompositeDisposable
-import io.reactivex.rxjava3.kotlin.addTo
 import io.reactivex.rxjava3.kotlin.plusAssign
 import moxy.MvpPresenter
-import ru.kiloqky.gb.githubclient.model.githubrest.IGithubUsersRepo
-import ru.kiloqky.gb.githubclient.model.githubrest.entities.Repo
+import ru.kiloqky.gb.githubclient.model.entities.Repo
+import ru.kiloqky.gb.githubclient.model.user.GithubUserRepository
 import ru.kiloqky.gb.githubclient.presentation.repo.RepoScreen
 import ru.kiloqky.gb.githubclient.presentation.user.adapter.IReposListPresenter
 import ru.kiloqky.gb.githubclient.presentation.user.adapter.ReposItemView
@@ -15,7 +14,7 @@ import ru.kiloqky.gb.githubclient.scheduler.Schedulers
 
 class UserPresenter(
     private val login: String,
-    private val userRepository: IGithubUsersRepo,
+    private val userRepository: GithubUserRepository,
     private val router: Router,
     private val schedulers: Schedulers
 ) : MvpPresenter<UserView>() {
@@ -44,28 +43,18 @@ class UserPresenter(
         }
         disposables +=
             userRepository
-                .loadUser(login)
+                .loadUserByLogin(login)
                 .observeOn(schedulers.main())
-                .doAfterSuccess { user ->
-                    user.repos_url?.let { url ->
-                        Log.d("repos", "from url")
-                        disposables +=
-                            userRepository
-                                .loadReposFromUrl(url)
-                                .observeOn(schedulers.main())
-                                .subscribe(::getReposSuccess, viewState::showError)
-                    } ?: user.login?.let { login ->
-                        Log.d("repos", "from login")
+                .subscribeOn(schedulers.background())
+                .doOnNext {
+                    disposables +=
                         userRepository
                             .loadReposFromLogin(login)
                             .observeOn(schedulers.main())
+                            .subscribeOn(schedulers.background())
                             .subscribe(::getReposSuccess, viewState::showError)
-                            .addTo(disposables)
-                    }
                 }
                 .subscribe(viewState::showUser, viewState::showError)
-
-
     }
 
     private fun getReposSuccess(list: List<Repo>) {
