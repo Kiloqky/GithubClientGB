@@ -5,15 +5,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
-import ru.kiloqky.gb.githubclient.App.Navigation.router
 import ru.kiloqky.gb.githubclient.R
 import ru.kiloqky.gb.githubclient.databinding.FragmentUsersBinding
 import ru.kiloqky.gb.githubclient.helpers.gone
 import ru.kiloqky.gb.githubclient.model.imageloader.GlideImageLoader
-import ru.kiloqky.gb.githubclient.model.user.GithubUserRepositoryFactory
-import ru.kiloqky.gb.githubclient.model.user.datasource.cloud.CloudGithubUserDataSource
 import ru.kiloqky.gb.githubclient.presentation.users.adapter.UsersRVAdapter
-import ru.kiloqky.gb.githubclient.scheduler.SchedulersFactory
 
 class UsersFragment : MvpAppCompatFragment(R.layout.fragment_users), UsersView {
 
@@ -24,11 +20,7 @@ class UsersFragment : MvpAppCompatFragment(R.layout.fragment_users), UsersView {
     }
 
     private val presenter: UsersPresenter by moxyPresenter {
-        UsersPresenter(
-            GithubUserRepositoryFactory.create(),
-            router,
-            SchedulersFactory.create()
-        )
+        UsersPresenter()
     }
     private var adapter: UsersRVAdapter? = null
 

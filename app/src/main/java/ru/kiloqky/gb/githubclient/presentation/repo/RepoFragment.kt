@@ -12,11 +12,8 @@ import ru.kiloqky.gb.githubclient.helpers.arguments
 import ru.kiloqky.gb.githubclient.helpers.click
 import ru.kiloqky.gb.githubclient.helpers.gone
 import ru.kiloqky.gb.githubclient.helpers.visible
-import ru.kiloqky.gb.githubclient.model.user.datasource.cloud.CloudGithubUserDataSource
 import ru.kiloqky.gb.githubclient.model.entities.Repo
 import ru.kiloqky.gb.githubclient.model.imageloader.GlideImageLoader
-import ru.kiloqky.gb.githubclient.model.user.GithubUserRepositoryFactory
-import ru.kiloqky.gb.githubclient.scheduler.SchedulersFactory
 
 class RepoFragment : MvpAppCompatFragment(R.layout.fragment_repos), RepoView {
     private val binding: FragmentReposBinding by viewBinding()
@@ -46,12 +43,8 @@ class RepoFragment : MvpAppCompatFragment(R.layout.fragment_repos), RepoView {
     }
 
 
-
     private val presenter: RepoPresenter by moxyPresenter {
-        RepoPresenter(
-            repoName, repoOwner, GithubUserRepositoryFactory.create(),
-            SchedulersFactory.create()
-        )
+        RepoPresenter(repoName, repoOwner)
     }
 
     override fun showUserAndRepo(repo: Repo) {
@@ -84,7 +77,7 @@ class RepoFragment : MvpAppCompatFragment(R.layout.fragment_repos), RepoView {
     }
 
     override fun init() {
-        with(binding){
+        with(binding) {
             shimmerLayoutContainer.visible()
             contentContainer.gone()
             shimmerLayoutContainer.startShimmer()

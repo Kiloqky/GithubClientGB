@@ -4,20 +4,31 @@ import com.github.terrakok.cicerone.Router
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.plusAssign
 import moxy.MvpPresenter
+import ru.kiloqky.gb.githubclient.App
 import ru.kiloqky.gb.githubclient.model.entities.GithubUser
 import ru.kiloqky.gb.githubclient.model.user.GithubUserRepository
-import ru.kiloqky.gb.githubclient.presentation.user.UserScreen
+import ru.kiloqky.gb.githubclient.presentation.IScreens
 import ru.kiloqky.gb.githubclient.presentation.users.adapter.IUserListPresenter
 import ru.kiloqky.gb.githubclient.presentation.users.adapter.UserItemView
 import ru.kiloqky.gb.githubclient.scheduler.Schedulers
+import javax.inject.Inject
 
-class UsersPresenter(
-    private val usersRepo: GithubUserRepository,
-    private val router: Router,
-    private val schedulers: Schedulers
-) :
+
+class UsersPresenter() :
     MvpPresenter<UsersView>() {
     private val disposables = CompositeDisposable()
+
+    @Inject
+    lateinit var router: Router
+
+    @Inject
+    lateinit var screens: IScreens
+
+    @Inject
+    lateinit var userRepository: GithubUserRepository
+
+    @Inject
+    lateinit var schedulers: Schedulers
 
     class UsersListPresenter : IUserListPresenter {
         val users = mutableListOf<GithubUser>()
@@ -36,6 +47,7 @@ class UsersPresenter(
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
+        App.instance.appComponent.inject(this)
         viewState.init()
         loadData()
         usersListPresenter.itemClickListener = { itemView ->
@@ -45,7 +57,7 @@ class UsersPresenter(
 
     private fun loadData() {
         disposables +=
-            usersRepo
+            userRepository
                 .loadUsers()
                 .observeOn(schedulers.main())
                 .subscribeOn(schedulers.background())
@@ -72,7 +84,7 @@ class UsersPresenter(
     }
 
     private fun navigateToUserFragment(githubUser: GithubUser) {
-        githubUser.login?.let { router.navigateTo(UserScreen(it)) }
+        githubUser.login?.let { router.navigateTo(screens.UserScreen(it)) }
     }
 
     override fun onDestroy() {
