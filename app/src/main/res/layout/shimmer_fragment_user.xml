@@ -8,9 +8,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/userContainer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        tools:visibility="visible"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
@@ -33,9 +32,10 @@
 
         <TextView
             android:id="@+id/name"
-            android:layout_width="wrap_content"
+            android:layout_width="96dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
+            android:background="@color/githubPrimaryToolbar"
             app:layout_constraintBottom_toBottomOf="@+id/txtName"
             app:layout_constraintStart_toEndOf="@+id/txtName"
             app:layout_constraintTop_toTopOf="@+id/txtName"
@@ -52,9 +52,10 @@
 
         <TextView
             android:id="@+id/login"
-            android:layout_width="wrap_content"
+            android:layout_width="96dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
+            android:background="@color/githubPrimaryToolbar"
             app:layout_constraintBottom_toBottomOf="@+id/txtLogin"
             app:layout_constraintStart_toEndOf="@+id/txtLogin"
             app:layout_constraintTop_toTopOf="@+id/txtLogin"
@@ -71,9 +72,10 @@
 
         <TextView
             android:id="@+id/followers"
-            android:layout_width="wrap_content"
+            android:layout_width="96dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
+            android:background="@color/githubPrimaryToolbar"
             app:layout_constraintBottom_toBottomOf="@+id/txtFollowers"
             app:layout_constraintStart_toEndOf="@+id/txtFollowers"
             app:layout_constraintTop_toTopOf="@+id/txtFollowers"
@@ -90,33 +92,40 @@
 
         <TextView
             android:id="@+id/repoCount"
-            android:layout_width="wrap_content"
+            android:layout_width="96dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
+            android:background="@color/githubPrimaryToolbar"
             app:layout_constraintBottom_toBottomOf="@+id/txtRepoCount"
             app:layout_constraintStart_toEndOf="@id/txtRepoCount"
             app:layout_constraintTop_toTopOf="@+id/txtRepoCount"
             tools:text="*56*" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvRepos"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/txtRepoCount"
-            tools:itemCount="5"
-            tools:layout_editor_absoluteX="16dp"
-            tools:listitem="@layout/item_repos" />
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@+id/txtRepoCount">
+
+            <include layout="@layout/shimmer_item_repos" />
+
+            <include layout="@layout/shimmer_item_repos" />
+
+            <include layout="@layout/shimmer_item_repos" />
+
+            <include layout="@layout/shimmer_item_repos" />
+
+            <include layout="@layout/shimmer_item_repos" />
+
+            <include layout="@layout/shimmer_item_repos" />
+
+            <include layout="@layout/shimmer_item_repos" />
+
+            <include layout="@layout/shimmer_item_repos" />
+
+        </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <com.facebook.shimmer.ShimmerFrameLayout
-        android:id="@+id/shimmerLayoutContainer"
-        android:layout_width="match_parent"
-        tools:visibility="gone"
-        android:layout_height="match_parent">
-
-        <include layout="@layout/shimmer_fragment_user" />
-    </com.facebook.shimmer.ShimmerFrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

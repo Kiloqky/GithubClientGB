@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:foreground="?attr/selectableItemBackground">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/userContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/titleOwner"
+            style="@style/Title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/owner"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/iv_user_avatar"
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            android:layout_marginTop="16dp"
+            android:background="@color/githubPrimaryToolbar"
+            android:contentDescription="@string/avatar"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/titleOwner"
+            tools:src="@android:drawable/alert_dark_frame" />
+
+
+        <TextView
+            android:id="@+id/txtLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/login"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_user_avatar" />
+
+        <TextView
+            android:id="@+id/login"
+            android:layout_width="92dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:background="@color/githubPrimaryToolbar"
+            app:layout_constraintBottom_toBottomOf="@+id/txtLogin"
+            app:layout_constraintStart_toEndOf="@+id/txtLogin"
+            app:layout_constraintTop_toTopOf="@+id/txtLogin"
+            tools:text="*login*" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        app:layout_constraintTop_toBottomOf="@id/userContainer">
+
+        <TextView
+            android:id="@+id/titleRepo"
+            style="@style/Title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/repository"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/txtRepoName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/name"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/titleRepo" />
+
+        <TextView
+            android:id="@+id/repoName"
+            android:layout_width="92dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:background="@color/githubPrimaryToolbar"
+            app:layout_constraintBottom_toBottomOf="@+id/txtRepoName"
+            app:layout_constraintStart_toEndOf="@+id/txtRepoName"
+            app:layout_constraintTop_toTopOf="@+id/txtRepoName"
+            tools:text="*repo name*" />
+
+        <TextView
+            android:id="@+id/txtForks"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/forks"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtRepoName" />
+
+        <TextView
+            android:id="@+id/forks"
+            android:layout_width="92dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:background="@color/githubPrimaryToolbar"
+            app:layout_constraintBottom_toBottomOf="@+id/txtForks"
+            app:layout_constraintStart_toEndOf="@+id/txtForks"
+            app:layout_constraintTop_toTopOf="@+id/txtForks"
+            tools:text="*login*" />
+
+        <TextView
+            android:id="@+id/txtWatchers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/watchers"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtForks" />
+
+        <TextView
+            android:id="@+id/watchers"
+            android:layout_width="92dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:background="@color/githubPrimaryToolbar"
+            app:layout_constraintBottom_toBottomOf="@+id/txtWatchers"
+            app:layout_constraintStart_toEndOf="@+id/txtWatchers"
+            app:layout_constraintTop_toTopOf="@+id/txtWatchers"
+            tools:text="*73325*" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <Button
+        android:id="@+id/btnMore"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:layout_marginStart="16dp"
+        android:backgroundTint="@color/githubPrimaryToolbar"
+        android:text="@string/check_more"
+        android:textColor="@color/githubTextColor"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
