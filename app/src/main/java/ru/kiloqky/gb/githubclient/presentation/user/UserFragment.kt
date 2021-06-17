@@ -11,10 +11,10 @@ import ru.kiloqky.gb.githubclient.databinding.FragmentUserBinding
 import ru.kiloqky.gb.githubclient.helpers.arguments
 import ru.kiloqky.gb.githubclient.helpers.gone
 import ru.kiloqky.gb.githubclient.helpers.visible
-import ru.kiloqky.gb.githubclient.model.githubrest.entities.GithubUser
-import ru.kiloqky.gb.githubclient.model.githubrest.ApiHolder
-import ru.kiloqky.gb.githubclient.model.githubrest.RetrofitGithubUserRepo
+import ru.kiloqky.gb.githubclient.model.entities.GithubUser
+import ru.kiloqky.gb.githubclient.model.user.datasource.cloud.CloudGithubUserDataSource
 import ru.kiloqky.gb.githubclient.model.imageloader.GlideImageLoader
+import ru.kiloqky.gb.githubclient.model.user.GithubUserRepositoryFactory
 import ru.kiloqky.gb.githubclient.presentation.user.adapter.ReposRVAdapter
 import ru.kiloqky.gb.githubclient.scheduler.SchedulersFactory
 
@@ -41,19 +41,28 @@ class UserFragment : MvpAppCompatFragment(R.layout.fragment_user), UserView {
     }
 
     private val presenter: UserPresenter by moxyPresenter {
-        UserPresenter(userId, RetrofitGithubUserRepo(ApiHolder().api), router, SchedulersFactory.create())
+        UserPresenter(
+            userId,
+            GithubUserRepositoryFactory.create(),
+            router,
+            SchedulersFactory.create()
+        )
     }
 
     override fun init() {
         binding.userContainer.gone()
         binding.shimmerLayoutContainer.visible()
         binding.shimmerLayoutContainer.startShimmer()
+        binding.recyclerViewShimmer.startShimmer()
+        binding.recyclerViewShimmer.visible()
         binding.rvRepos.layoutManager = LinearLayoutManager(context)
         adapter = ReposRVAdapter(presenter.reposListPresenter)
         binding.rvRepos.adapter = adapter
     }
 
     override fun updateList() {
+        binding.recyclerViewShimmer.stopShimmer()
+        binding.recyclerViewShimmer.gone()
         adapter?.notifyDataSetChanged()
     }
 
