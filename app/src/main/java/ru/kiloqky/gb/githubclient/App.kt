@@ -1,17 +1,15 @@
 package ru.kiloqky.gb.githubclient
 
-import android.annotation.SuppressLint
-import android.app.AppComponentFactory
-import android.app.Application
-import android.content.Context
 import androidx.appcompat.app.AppCompatDelegate
 import com.github.terrakok.cicerone.Cicerone
-import dagger.internal.DaggerGenerated
+import dagger.android.AndroidInjector
+import dagger.android.DaggerApplication
 import ru.kiloqky.gb.githubclient.di.AppComponent
-import ru.kiloqky.gb.githubclient.di.AppModule
 import ru.kiloqky.gb.githubclient.di.DaggerAppComponent
+import ru.kiloqky.gb.githubclient.presentation.Screens
+import ru.kiloqky.gb.githubclient.scheduler.DefaultSchedulers
 
-class App : Application() {
+class App : DaggerApplication() {
 
     companion object {
         lateinit var instance: App
@@ -23,7 +21,19 @@ class App : Application() {
         super.onCreate()
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         instance = this
-
-        appComponent = DaggerAppComponent.builder().appModule(AppModule(this)).build()
     }
+
+    override fun applicationInjector(): AndroidInjector<out DaggerApplication> =
+        DaggerAppComponent
+            .builder()
+            .withContext(applicationContext)
+            .apply {
+                val cicerone = Cicerone.create()
+
+                withRouter(cicerone.router)
+                withNavigatorHolder(cicerone.getNavigatorHolder())
+                withScreens(Screens())
+            }
+            .withSchedulers(DefaultSchedulers())
+            .build()
 }

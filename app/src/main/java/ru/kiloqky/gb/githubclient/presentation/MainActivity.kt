@@ -7,9 +7,10 @@ import moxy.MvpAppCompatActivity
 import ru.kiloqky.gb.githubclient.App
 import ru.kiloqky.gb.githubclient.R
 import ru.kiloqky.gb.githubclient.R.layout.activity_main
+import ru.kiloqky.gb.githubclient.presentation.abs.AbsActivity
 import javax.inject.Inject
 
-class MainActivity : MvpAppCompatActivity(activity_main) {
+class MainActivity : AbsActivity(activity_main) {
 
     private val navigator = MainAppNavigator(this, R.id.container)
 
@@ -17,15 +18,13 @@ class MainActivity : MvpAppCompatActivity(activity_main) {
     lateinit var navigatorHolder: NavigatorHolder
 
     @Inject
-    lateinit var router: Router
-
-    @Inject
     lateinit var screens: IScreens
 
+    @Inject
+    lateinit var router: Router
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        App.instance.appComponent.inject(this)
         savedInstanceState ?: router.newRootScreen(screens.UsersScreen())
     }
 
