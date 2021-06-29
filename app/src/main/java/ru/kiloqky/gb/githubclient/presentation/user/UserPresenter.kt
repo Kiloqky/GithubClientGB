@@ -7,19 +7,21 @@ import io.reactivex.rxjava3.kotlin.plusAssign
 import moxy.MvpPresenter
 import ru.kiloqky.gb.githubclient.model.entities.Repo
 import ru.kiloqky.gb.githubclient.model.user.GithubUserRepository
-import ru.kiloqky.gb.githubclient.presentation.repo.RepoScreen
+import ru.kiloqky.gb.githubclient.presentation.IScreens
 import ru.kiloqky.gb.githubclient.presentation.user.adapter.IReposListPresenter
 import ru.kiloqky.gb.githubclient.presentation.user.adapter.ReposItemView
 import ru.kiloqky.gb.githubclient.scheduler.Schedulers
 
 class UserPresenter(
     private val login: String,
-    private val userRepository: GithubUserRepository,
-    private val router: Router,
-    private val schedulers: Schedulers
+    val router: Router,
+    val screens: IScreens,
+    val repository: GithubUserRepository,
+    val schedulers: Schedulers
 ) : MvpPresenter<UserView>() {
 
     private var disposables = CompositeDisposable()
+
 
     class ReposListPresenter : IReposListPresenter {
         val repos = mutableListOf<Repo>()
@@ -42,14 +44,14 @@ class UserPresenter(
             navigateToRepoScreen(reposListPresenter.repos[itemView.pos])
         }
         disposables +=
-            userRepository
+            repository
                 .loadUserByLogin(login)
                 .observeOn(schedulers.main())
                 .subscribeOn(schedulers.background())
                 .subscribe(viewState::showUser, viewState::showError)
 
         disposables +=
-            userRepository
+            repository
                 .loadReposFromLogin(login)
                 .observeOn(schedulers.main())
                 .subscribeOn(schedulers.background())
@@ -67,8 +69,8 @@ class UserPresenter(
         repo.name?.let { repoName ->
             router.navigateTo(
                 repo.owner?.login?.let { repoOwner ->
-                    RepoScreen(repoName, repoOwner)
-                } ?: RepoScreen("", ""))
+                    screens.RepoScreen(repoName, repoOwner)
+                } ?: screens.RepoScreen("", ""))
         }
     }
 

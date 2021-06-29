@@ -3,32 +3,42 @@ package ru.kiloqky.gb.githubclient.presentation.users
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.github.terrakok.cicerone.Router
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
-import ru.kiloqky.gb.githubclient.App.Navigation.router
 import ru.kiloqky.gb.githubclient.R
 import ru.kiloqky.gb.githubclient.databinding.FragmentUsersBinding
 import ru.kiloqky.gb.githubclient.helpers.gone
 import ru.kiloqky.gb.githubclient.model.imageloader.GlideImageLoader
-import ru.kiloqky.gb.githubclient.model.user.GithubUserRepositoryFactory
-import ru.kiloqky.gb.githubclient.model.user.datasource.cloud.CloudGithubUserDataSource
+import ru.kiloqky.gb.githubclient.model.user.GithubUserRepository
+import ru.kiloqky.gb.githubclient.presentation.IScreens
+import ru.kiloqky.gb.githubclient.presentation.abs.AbsFragment
 import ru.kiloqky.gb.githubclient.presentation.users.adapter.UsersRVAdapter
-import ru.kiloqky.gb.githubclient.scheduler.SchedulersFactory
+import ru.kiloqky.gb.githubclient.scheduler.Schedulers
+import javax.inject.Inject
 
-class UsersFragment : MvpAppCompatFragment(R.layout.fragment_users), UsersView {
+class UsersFragment : AbsFragment(R.layout.fragment_users), UsersView {
 
     private val binding: FragmentUsersBinding by viewBinding()
+
+    @Inject
+    lateinit var router: Router
+
+    @Inject
+    lateinit var screens: IScreens
+
+    @Inject
+    lateinit var repository: GithubUserRepository
+
+    @Inject
+    lateinit var schedulers: Schedulers
 
     companion object {
         fun newInstance() = UsersFragment()
     }
 
     private val presenter: UsersPresenter by moxyPresenter {
-        UsersPresenter(
-            GithubUserRepositoryFactory.create(),
-            router,
-            SchedulersFactory.create()
-        )
+        UsersPresenter(router, screens, repository, schedulers)
     }
     private var adapter: UsersRVAdapter? = null
 

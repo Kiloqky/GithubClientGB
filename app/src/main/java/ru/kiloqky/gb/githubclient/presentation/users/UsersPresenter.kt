@@ -6,15 +6,17 @@ import io.reactivex.rxjava3.kotlin.plusAssign
 import moxy.MvpPresenter
 import ru.kiloqky.gb.githubclient.model.entities.GithubUser
 import ru.kiloqky.gb.githubclient.model.user.GithubUserRepository
-import ru.kiloqky.gb.githubclient.presentation.user.UserScreen
+import ru.kiloqky.gb.githubclient.presentation.IScreens
 import ru.kiloqky.gb.githubclient.presentation.users.adapter.IUserListPresenter
 import ru.kiloqky.gb.githubclient.presentation.users.adapter.UserItemView
 import ru.kiloqky.gb.githubclient.scheduler.Schedulers
 
+
 class UsersPresenter(
-    private val usersRepo: GithubUserRepository,
-    private val router: Router,
-    private val schedulers: Schedulers
+    val router: Router,
+    val screens: IScreens,
+    val repository: GithubUserRepository,
+    val schedulers: Schedulers
 ) :
     MvpPresenter<UsersView>() {
     private val disposables = CompositeDisposable()
@@ -45,7 +47,7 @@ class UsersPresenter(
 
     private fun loadData() {
         disposables +=
-            usersRepo
+            repository
                 .loadUsers()
                 .observeOn(schedulers.main())
                 .subscribeOn(schedulers.background())
@@ -72,7 +74,7 @@ class UsersPresenter(
     }
 
     private fun navigateToUserFragment(githubUser: GithubUser) {
-        githubUser.login?.let { router.navigateTo(UserScreen(it)) }
+        githubUser.login?.let { router.navigateTo(screens.UserScreen(it)) }
     }
 
     override fun onDestroy() {
