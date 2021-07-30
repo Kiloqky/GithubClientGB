@@ -4,17 +4,19 @@ import com.github.terrakok.cicerone.Router
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.plusAssign
 import moxy.MvpPresenter
-import ru.kiloqky.gb.githubclient.model.githubrest.IGithubUsersRepo
-import ru.kiloqky.gb.githubclient.model.githubrest.entities.GithubUser
-import ru.kiloqky.gb.githubclient.presentation.user.UserScreen
+import ru.kiloqky.gb.githubclient.model.entities.GithubUser
+import ru.kiloqky.gb.githubclient.model.user.GithubUserRepository
+import ru.kiloqky.gb.githubclient.presentation.IScreens
 import ru.kiloqky.gb.githubclient.presentation.users.adapter.IUserListPresenter
 import ru.kiloqky.gb.githubclient.presentation.users.adapter.UserItemView
 import ru.kiloqky.gb.githubclient.scheduler.Schedulers
 
+
 class UsersPresenter(
-    private val usersRepo: IGithubUsersRepo,
-    private val router: Router,
-    private val schedulers: Schedulers
+    val router: Router,
+    val screens: IScreens,
+    val repository: GithubUserRepository,
+    val schedulers: Schedulers
 ) :
     MvpPresenter<UsersView>() {
     private val disposables = CompositeDisposable()
@@ -27,7 +29,7 @@ class UsersPresenter(
 
         override fun bindView(view: UserItemView) {
             val user = users[view.pos]
-            user.login?.let(view::setLogin)
+            user.name?.let(view::setLogin) ?: run { user.login?.let(view::setLogin) }
             user.avatarUrl?.let { view.loadAvatar(it) }
         }
     }
@@ -45,15 +47,21 @@ class UsersPresenter(
 
     private fun loadData() {
         disposables +=
-            usersRepo
+            repository
                 .loadUsers()
                 .observeOn(schedulers.main())
-                .subscribe(::onGetUsersSuccess, ::onGetUsersError)
+                .subscribeOn(schedulers.background())
+                .subscribe(
+                    ::onGetUsersSuccess,
+                    ::onGetUsersError
+                )
 
     }
-    fun refresh(){
+
+    fun refresh() {
         loadData()
     }
+
     private fun onGetUsersSuccess(list: List<GithubUser>) {
         usersListPresenter.users.clear()
         usersListPresenter.users.addAll(list)
@@ -66,7 +74,7 @@ class UsersPresenter(
     }
 
     private fun navigateToUserFragment(githubUser: GithubUser) {
-        githubUser.login?.let { router.navigateTo(UserScreen(it)) }
+        githubUser.login?.let { router.navigateTo(screens.UserScreen(it)) }
     }
 
     override fun onDestroy() {

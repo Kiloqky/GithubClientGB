@@ -12,14 +12,21 @@ import ru.kiloqky.gb.githubclient.helpers.arguments
 import ru.kiloqky.gb.githubclient.helpers.click
 import ru.kiloqky.gb.githubclient.helpers.gone
 import ru.kiloqky.gb.githubclient.helpers.visible
-import ru.kiloqky.gb.githubclient.model.githubrest.ApiHolder
-import ru.kiloqky.gb.githubclient.model.githubrest.RetrofitGithubUserRepo
-import ru.kiloqky.gb.githubclient.model.githubrest.entities.Repo
+import ru.kiloqky.gb.githubclient.model.entities.Repo
 import ru.kiloqky.gb.githubclient.model.imageloader.GlideImageLoader
-import ru.kiloqky.gb.githubclient.scheduler.SchedulersFactory
+import ru.kiloqky.gb.githubclient.model.user.GithubUserRepository
+import ru.kiloqky.gb.githubclient.presentation.abs.AbsFragment
+import ru.kiloqky.gb.githubclient.scheduler.Schedulers
+import javax.inject.Inject
 
-class RepoFragment : MvpAppCompatFragment(R.layout.fragment_repos), RepoView {
+class RepoFragment : AbsFragment(R.layout.fragment_repos), RepoView {
     private val binding: FragmentReposBinding by viewBinding()
+
+    @Inject
+    lateinit var schedulers: Schedulers
+
+    @Inject
+    lateinit var repository: GithubUserRepository
 
     companion object {
         private const val ARG_REPO_NAME = "repoName"
@@ -46,12 +53,8 @@ class RepoFragment : MvpAppCompatFragment(R.layout.fragment_repos), RepoView {
     }
 
 
-
     private val presenter: RepoPresenter by moxyPresenter {
-        RepoPresenter(
-            repoName, repoOwner, RetrofitGithubUserRepo(ApiHolder().api),
-            SchedulersFactory.create()
-        )
+        RepoPresenter(repoName, repoOwner, schedulers, repository)
     }
 
     override fun showUserAndRepo(repo: Repo) {
@@ -84,7 +87,7 @@ class RepoFragment : MvpAppCompatFragment(R.layout.fragment_repos), RepoView {
     }
 
     override fun init() {
-        with(binding){
+        with(binding) {
             shimmerLayoutContainer.visible()
             contentContainer.gone()
             shimmerLayoutContainer.startShimmer()

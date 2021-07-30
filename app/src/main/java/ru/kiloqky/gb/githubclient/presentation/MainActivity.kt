@@ -1,42 +1,31 @@
 package ru.kiloqky.gb.githubclient.presentation
 
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
-import com.github.terrakok.cicerone.androidx.AppNavigator
-import com.github.terrakok.cicerone.androidx.FragmentScreen
+import com.github.terrakok.cicerone.NavigatorHolder
+import com.github.terrakok.cicerone.Router
 import moxy.MvpAppCompatActivity
-import ru.kiloqky.gb.githubclient.App.Navigation.navigatorHolder
-import ru.kiloqky.gb.githubclient.App.Navigation.router
+import ru.kiloqky.gb.githubclient.App
 import ru.kiloqky.gb.githubclient.R
 import ru.kiloqky.gb.githubclient.R.layout.activity_main
-import ru.kiloqky.gb.githubclient.presentation.users.UsersScreen
+import ru.kiloqky.gb.githubclient.presentation.abs.AbsActivity
+import javax.inject.Inject
 
-class MainActivity : MvpAppCompatActivity(activity_main) {
-    private val navigator = object : AppNavigator(this, R.id.container) {
-        override fun setupFragmentTransaction(
-            screen: FragmentScreen,
-            fragmentTransaction: FragmentTransaction,
-            currentFragment: Fragment?,
-            nextFragment: Fragment,
-        ) {
-            fragmentTransaction.setCustomAnimations(R.anim.from_right, R.anim.to_left)
-        }
-    }
+class MainActivity : AbsActivity(activity_main) {
+
+    private val navigator = MainAppNavigator(this, R.id.container)
+
+    @Inject
+    lateinit var navigatorHolder: NavigatorHolder
+
+    @Inject
+    lateinit var screens: IScreens
+
+    @Inject
+    lateinit var router: Router
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        savedInstanceState ?: router.newRootScreen(UsersScreen)
-        supportActionBar?.setBackgroundDrawable(
-            ColorDrawable(
-                ContextCompat.getColor(
-                    this,
-                    R.color.githubPrimaryToolbar
-                )
-            )
-        )
+        savedInstanceState ?: router.newRootScreen(screens.UsersScreen())
     }
 
     override fun onResumeFragments() {
