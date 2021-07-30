@@ -6,9 +6,7 @@ Currently used:
 - Retrofit
 - Glide
 - RxJava
-- Shimmer Effect
-
-In development: 
+- Shimmer Effect 
 - Dagger 2
 - Room
 
